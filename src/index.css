@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .scroll-thin {
+        -ms-overflow-style:auto;
+        scrollbar-width: thin;
+        scroll-behavior:smooth;
+    }
+}
