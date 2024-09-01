@@ -1,11 +1,16 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { BiSolidMicrophone } from "react-icons/bi";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useConversations } from "../context/ConversationProvider";
 
 const OpenConversation = () => {
   const inputForm = useRef();
+  const setRef = useCallback((node) => {
+    if (node) {
+      node.scrollIntoView({ smooth: true });
+    }
+  }, []);
   const [messageValue, setMessageValue] = useState("");
   const { sendMessage, selectedConversation } = useConversations();
 
@@ -19,7 +24,7 @@ const OpenConversation = () => {
     setMessageValue("");
   };
 
-  console.log(selectedConversation);
+  // console.log(selectedConversation);
 
   return (
     <>
@@ -41,29 +46,34 @@ const OpenConversation = () => {
         </header>
 
         <div className="w-full flex flex-col flex-grow bg-gradient-to-t bg-transparent">
-          <ul className="message-box flex flex-col h-[80vh] overflow-y-scroll px-5 py-3 scroll-thin" >
+          <ul className="message-box flex flex-col h-[80vh] overflow-y-scroll px-5 py-3 scroll-thin">
             {selectedConversation &&
-              selectedConversation.messages.map((val, key) => (
-                <li
-                  key={key}
-                  className={`w-fit p-[.40rem] rounded-lg mb-2 ${
-                    val.fromMe ? "ms-auto bg-secondary-green" : 'bg-white'
-                  }`}
-                >
-                  {selectedConversation.recipients.length >= 2 &&
-                  !val.fromMe ? (
-                    <a href="#" className="text-sm hover:underline">
-                      {val.senderName || val.sender}
-                    </a>
-                  ) : (
-                    ""
-                  )}
-                  <div className="flex justify-between gap-2 items-end">
-                    <p>{val.textMessage}</p>
-                    <p className="text-[.7rem]">12:11 PM</p>
-                  </div>
-                </li>
-              ))}
+              selectedConversation.messages.map((val, key) => {
+                const lastMessage =
+                  selectedConversation.messages.length - 1 == key;
+                return (
+                  <li
+                    ref={lastMessage ? setRef : null}
+                    key={key}
+                    className={`w-fit p-[.40rem] rounded-lg mb-2 ${
+                      val.fromMe ? "ms-auto bg-secondary-green" : "bg-white"
+                    }`}
+                  >
+                    {selectedConversation.recipients.length >= 2 &&
+                    !val.fromMe ? (
+                      <a href="#" className="text-sm hover:underline">
+                        {val.senderName || val.sender}
+                      </a>
+                    ) : (
+                      ""
+                    )}
+                    <div className="flex justify-between gap-2 items-end">
+                      <p>{val.textMessage}</p>
+                      <p className="text-[.7rem]">12:11 PM</p>
+                    </div>
+                  </li>
+                );
+              })}
           </ul>
 
           <div className="bg-secondary-gray h-[14%]">

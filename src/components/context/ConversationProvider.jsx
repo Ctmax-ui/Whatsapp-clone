@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useContacts } from "./ContactsProvider";
+import { useSocket } from "./SocketProvider";
 
 const ConversationContext = React.createContext();
 export const useConversations = () => {
@@ -24,6 +25,7 @@ export const ConversationProvider = ({ userId, children }) => {
     "conversations",
     []
   );
+  const socket = useSocket();
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
 
   const createConversation = (recipients) => {
@@ -32,32 +34,43 @@ export const ConversationProvider = ({ userId, children }) => {
     });
   };
 
-  const addMessageToConversation = ({ recipients, textMessage, sender }) => {
-    console.log(recipients, textMessage, sender);
+  const addMessageToConversation = useCallback(
+    ({ recipients, textMessage, sender }) => {
+      console.log(recipients, textMessage, sender);
 
-    setConversations((prevConversation) => {
-      let madeChange = false;
-      const newMessage = { sender, textMessage };
-      const newConversation = prevConversation.map((conversation) => {
-        if (arrayEquality(conversation.recipients, recipients)) {
-          madeChange = true;
-          return {
-            ...conversation,
-            messages: [...conversation.messages, newMessage],
-          };
+      setConversations((prevConversation) => {
+        let madeChange = false;
+        const newMessage = { sender, textMessage };
+        const newConversation = prevConversation.map((conversation) => {
+          if (arrayEquality(conversation.recipients, recipients)) {
+            madeChange = true;
+            return {
+              ...conversation,
+              messages: [...conversation.messages, newMessage],
+            };
+          }
+          return conversation;
+        });
+
+        if (madeChange) {
+          return newConversation;
+        } else {
+          return [...prevConversation, { recipients, messages: [newMessage] }];
         }
-        return conversation;
       });
+    },
+    [setConversations]
+  );
 
-      if (madeChange) {
-        return newConversation;
-      } else {
-        return [...prevConversation, { recipients, messages: [newMessage] }];
-      }
-    });
-  };
+  useEffect(() => {
+    if (socket==null) return
+    socket.on("recive-message", addMessageToConversation);
+    return () => socket.off("recive-message");
+  }, [socket, addMessageToConversation]);
 
   const sendMessage = (recipients, textMessage) => {
+    socket.emit("send-message", { recipients, textMessage });
+
     addMessageToConversation({ recipients, textMessage, sender: userId });
   };
 
@@ -83,7 +96,7 @@ export const ConversationProvider = ({ userId, children }) => {
     });
 
     const selected = index === selectedConversationIndex;
-    return { ...conversation,messages, recipients, selected };
+    return { ...conversation, messages, recipients, selected };
   });
 
   const value = {

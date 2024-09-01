@@ -8,4 +8,14 @@
         scrollbar-width: thin;
         scroll-behavior:smooth;
     }
+    .scroll-color-200{
+        scrollbar-color: rgba(var(--black-rgb), .2) transparent;
+    }
+
+    .fontpro-text{
+        font-family: "SF Pro Text", "SF Pro Icons", system, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "Ubuntu", "Cantarell", "Fira Sans", sans-serif
+    }
+    .text-22{
+        font-size: 22px;
+    }
 }

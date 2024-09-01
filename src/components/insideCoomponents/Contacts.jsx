@@ -6,7 +6,7 @@ const Contacts = ({ currentTab, setCurrentTab }) => {
 
   return (
     <>
-      <div className="w-1/4 border h-full ">
+      <div className="w-1/4 border h-full">
         <div className="flex justify-between px-5 border-b p-5">
           <p>Contacts</p>
           <button onClick={() => setCurrentTab(3)} className="px-3 py-2 border">
