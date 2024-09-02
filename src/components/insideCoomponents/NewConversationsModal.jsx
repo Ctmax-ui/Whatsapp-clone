@@ -59,7 +59,7 @@ const NewConversationsModal = ({ currentTab, setCurrentTab }) => {
       createConversation(selectedContactsIds);
       selectConversationIndex(conversations.length);
     }else {
-      console.log(selectedContactsIds);
+      // console.log(selectedContactsIds);
       // console.log(alreadyExsistConver().thatConversationIndex);
       selectConversationIndex(alreadyExsistConver().thatConversationIndex);
     }
@@ -119,7 +119,7 @@ const NewConversationsModal = ({ currentTab, setCurrentTab }) => {
           <ul className=" h-[70vh] overflow-y-scroll scroll-thin scroll-color-200">
             <li
               className={` cursor-pointer px-2 hover:bg-secondary-gray text-lg flex items-center gap-4`}
-              onClick={()=>setCurrentTab(1)}
+              onClick={()=>setCurrentTab(3)}
             >
               <div
                 className="w-[50px] h-[50px] rounded-full flex justify-center items-center bg-green-600 text-white text-2xl"

@@ -15,7 +15,7 @@ const OpenConversation = () => {
   const { sendMessage, selectedConversation } = useConversations();
 
   const handleSubmit = (e) => {
-    console.log(selectedConversation);
+    // console.log(selectedConversation);
     e.preventDefault();
     sendMessage(
       selectedConversation.recipients.map((r) => r.userId),
@@ -33,10 +33,10 @@ const OpenConversation = () => {
           <div className="flex gap-3 items-center">
             <img
               className="border w-[50px] h-[50px] object-fill rounded-full"
-              src="/site-logo/logo.svg"
+              src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${selectedConversation?.recipients[0].userName.charAt(0).toUpperCase()}.svg`}
               alt="lol"
             />
-            <p>Name</p>
+            <p>{selectedConversation?.recipients.length <= 1? selectedConversation?.recipients[0].userName: selectedConversation.recipients.map(r=>r.userName).join(', ')+ "...group"}</p>
           </div>
           <div className="flex items-center">
             <button>
@@ -69,7 +69,7 @@ const OpenConversation = () => {
                     )}
                     <div className="flex justify-between gap-2 items-end">
                       <p>{val.textMessage}</p>
-                      <p className="text-[.7rem]">12:11 PM</p>
+                      <p className="text-[.7rem]">{val.sendedtime || '00:00'}</p>
                     </div>
                   </li>
                 );

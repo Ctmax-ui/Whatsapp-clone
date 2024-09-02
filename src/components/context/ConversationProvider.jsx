@@ -19,7 +19,7 @@ const arrayEquality = (a, b) => {
   });
 };
 
-export const ConversationProvider = ({ userId, children }) => {
+export const ConversationProvider = ({ userId, children, userDeta }) => {
   const { contacts } = useContacts();
   const [conversations, setConversations] = useLocalStorage(
     "conversations",
@@ -36,12 +36,17 @@ export const ConversationProvider = ({ userId, children }) => {
 
   const addMessageToConversation = useCallback(
     ({ recipients, textMessage, sender }) => {
-      console.log(recipients, textMessage, sender);
-
+      // console.log(recipients, textMessage, sender);
+      
       setConversations((prevConversation) => {
         let madeChange = false;
-        const newMessage = { sender, textMessage };
+        const date = new Date
+        const currentTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`
+        console.log(currentTime);
+
+        const newMessage = { sender, textMessage , sendedtime:currentTime};
         const newConversation = prevConversation.map((conversation) => {
+
           if (arrayEquality(conversation.recipients, recipients)) {
             madeChange = true;
             return {
@@ -50,6 +55,7 @@ export const ConversationProvider = ({ userId, children }) => {
             };
           }
           return conversation;
+          
         });
 
         if (madeChange) {
@@ -80,7 +86,6 @@ export const ConversationProvider = ({ userId, children }) => {
         return contact.userId === recipient;
       });
       const name = (contact && contact.userName) || recipient;
-      // console.log(name);
       return { userId: recipient, userName: name };
     });
 
@@ -89,14 +94,12 @@ export const ConversationProvider = ({ userId, children }) => {
         return contact.userId === message.sender;
       });
       const name = (contact && contact.userName) || message.sender;
-
-      // console.log(contacts, message.sender, contact);
       const fromMe = userId === message.sender;
       return { ...message, senderName: name, fromMe };
     });
 
     const selected = index === selectedConversationIndex;
-    return { ...conversation, messages, recipients, selected };
+    return { ...conversation, messages, recipients, selected , index};
   });
 
   const value = {
@@ -105,6 +108,7 @@ export const ConversationProvider = ({ userId, children }) => {
     sendMessage,
     selectConversationIndex: setSelectedConversationIndex,
     createConversation,
+    selectedConversationIndex
   };
 
   return (

@@ -7,16 +7,15 @@ import NewContactModal from "./insideCoomponents/NewContactModal";
 import OpenConversation from "./insideCoomponents/OpenConversation";
 import { useConversations } from "./context/ConversationProvider";
 
-const Sidebar = ({ userId }) => {
+const Sidebar = ({ userId, userDetails }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const { selectedConversation } = useConversations();
 
   // console.log(selectedConversation);
-  // console.log(userId);
   return (
     <>
       <div
-        className="flex bg-light-bac  fontpro-text"
+        className="flex bg-light-bac fontpro-text overflow-hidden 2xl:w-[1200px] mx-auto"
         style={{
           background: "#efeae2 url('bg/tp-light-bg.png') center",
           backgroundSize: "300px ",
@@ -202,7 +201,7 @@ const Sidebar = ({ userId }) => {
                 className="text-3xl p-2 rounded-full cursor-pointer"
                 onClick={() => setCurrentTab(0)}
               >
-                <img className="border w-10 h-10 rounded-full flex items-center justify-center text-center text-sm" src="" alt="Eror" />
+                <img className="border w-10 h-10 object-cover rounded-full flex items-center justify-center text-center text-sm" loading="lazy" src={userDetails?.userImagE} alt="Eror" />
               </li>
             </ul>
           </nav>

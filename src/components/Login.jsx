@@ -2,7 +2,7 @@ import { useRef} from "react";
 import logo from "/site-logo/logo.svg";
 import { useState } from "react";
 
-const Login = ({onUserIdSubmit}) => {
+const Login = ({onUserIdSubmit, onUserDetailsSubmit}) => {
  const [showRegister, setShowRegister] = useState(false)
 
 const IdRef = useRef()
@@ -10,9 +10,11 @@ const IdRef = useRef()
  const handleSubmitRegister = (e)=>{
 
  }
+
  const handleSubmitLogin = (e)=>{
   e.preventDefault()
   onUserIdSubmit(IdRef.current[1].value)
+  onUserDetailsSubmit({userNamE: IdRef.current[0].value,userPasS:IdRef.current[2].value, userImagE:IdRef.current[3].value})
   console.log(IdRef);
  }
  
@@ -91,7 +93,7 @@ const IdRef = useRef()
                     id="registationName"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 "
                     placeholder="Type your username"
-                    required
+                    
                   />
                 </div>
                 <div className="mb-5">
@@ -121,6 +123,20 @@ const IdRef = useRef()
                     id="password"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                     placeholder="*****"
+                  />
+                </div>
+                <div className="mb-5">
+                  <label
+                    htmlFor="url"
+                    className="block mb-2 text-sm font-medium text-gray-900 "
+                  >
+                    Your profile pic url
+                  </label>
+                  <input
+                    type="url"
+                    id="url"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                    placeholder="https://image.png"
                   />
                 </div>
                 {/* <div className="flex items-start mb-5">

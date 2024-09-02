@@ -1,15 +1,15 @@
 import React from "react";
 import { useConversations } from "../context/ConversationProvider";
-import { FaArrowLeft } from "react-icons/fa6";
+import { IoAlertCircleOutline } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
 
 const Conversations = ({ currentTab, setCurrentTab }) => {
-  const { conversations, selectConversationIndex } = useConversations();
-  // console.log(conversations);
+  const { conversations, selectConversationIndex, selectedConversationIndex } = useConversations();
+  console.log(conversations.map((val) => val),selectedConversationIndex);
 
   return (
     <>
-      <div className="w-[354px] h-full bg-white">
+      <div className="w-[354px] h-screen overflow-hidden bg-white">
         <div className="flex justify-between px-4">
           <p className="text-22 font-bold my-5">Chats</p>
           <div className="flex items-center justify-center">
@@ -59,7 +59,7 @@ const Conversations = ({ currentTab, setCurrentTab }) => {
             </button>
           </div>
         </div>
-
+        {/* conversation filters */}
         <form action="" className="w-full mb-2 mt-2 px-3">
           <div className="bg-secondary-gray flex rounded-lg">
             <button className="py-2 ps-5 pe-4 text-xl">
@@ -101,26 +101,54 @@ const Conversations = ({ currentTab, setCurrentTab }) => {
         </form>
 
         <div className="">
-          <ul>
+          <ul className="h-[75vh] overflow-y-scroll scroll-thin">
             {conversations &&
-              conversations.map((conversation, key) => (
-                  <li
-                    key={key}
-                    onClick={() => selectConversationIndex(key)}
-                    className={`p-2 border-b cursor-pointer hover:bg-secondary-gray text-lg flex items-center gap-2 ${
-                      conversation.selected ? "bg-secondary-gray" : "bg-white"
-                    }`}
-                  >
-                    <img
-                      className="border w-[50px] h-[50px] object-fill rounded-full"
-                      src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${conversation.recipients[0].userName.charAt(0).toUpperCase()}.svg`}
-                      alt="lol"
-                    />
-                    {conversation.recipients
-                      .map((val) => val.userName)
-                      .join(", ")}
-                  </li>
-                ))}
+              conversations.map((conversation, key) => {
+               return (<li
+                  key={conversation.index}
+                  onClick={() => selectConversationIndex(conversation.index)}
+                  className={`p-2 border-b cursor-pointer hover:bg-secondary-gray text-lg flex items-center gap-2 ${
+                    conversation.selected ? "bg-secondary-gray" : "bg-white"
+                  }`}
+                >
+                  <img
+                    className="border w-[50px] h-[50px] object-fill rounded-full"
+                    src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${conversation.recipients[0].userName
+                      .charAt(0)
+                      .toUpperCase()}.svg`}
+                    alt="lol"
+                  />
+                  <div className="">
+                    <p className="text-nowrap flex">
+                      <span className="text-nowrap inline text-ellipsis w-[150px] -me-2 overflow-hidden">{conversation.recipients
+                        .map((val) => val.userName)
+                        .join(",")}</span>{conversation.recipients.length>=2&&<span>group</span>}
+                    </p>
+                    {conversation.messages.length != 0 && (
+                      <p className=" text-sm text-slate-600 text-nowrap text-ellipsis w-[150px] overflow-hidden">
+                        {conversation?.messages[
+                          conversation.messages.length - 1
+                        ]?.fromMe
+                          ? "you"
+                          : conversation?.messages[
+                              conversation.messages.length - 1
+                            ]?.senderName}{" "}
+                        :{" "}
+                        {
+                          conversation?.messages[
+                            conversation.messages.length - 1
+                          ]?.textMessage
+                        }
+                      </p>
+                    )}
+                  </div>
+                  
+                      <IoAlertCircleOutline className={`ms-auto rounded-full text-white bg-green-600 font-bold text-2xl ${conversation.messages.length != 0 &&
+                    !conversation?.messages[conversation.messages.length - 1]
+                      .fromMe? 'show':'hidden' } ${conversation.selected && 'hidden'}`} />
+                    
+                </li>)
+              })}
           </ul>
         </div>
       </div>

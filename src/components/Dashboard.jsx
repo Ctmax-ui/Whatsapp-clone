@@ -4,15 +4,14 @@ import { ContactsProvider } from "./context/ContactsProvider";
 import { ConversationProvider } from "./context/ConversationProvider";
 import { SocketProvider } from "./context/SocketProvider";
 
-const Dashboard = ({ userId }) => {
+const Dashboard = ({ userId, userDetails }) => {
   const { tabId, setTebId } = useState(0);
-
   return (
     <>
-      <SocketProvider id={userId}>
+      <SocketProvider id={userId} userDetails={userDetails}>
         <ContactsProvider>
-          <ConversationProvider userId={userId}>
-            <Sidebar userId={userId} />
+          <ConversationProvider userId={userId} userDetails={userDetails}>
+            <Sidebar userId={userId} userDetails={userDetails} />
           </ConversationProvider>
         </ContactsProvider>
       </SocketProvider>
