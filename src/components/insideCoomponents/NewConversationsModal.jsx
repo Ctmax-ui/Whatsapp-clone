@@ -15,7 +15,8 @@ const NewConversationsModal = ({ currentTab, setCurrentTab }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
+    if(selectedContactsIds.length >=1){
+      
     const alreadyExsistConver = () => {
       if (selectedContactsIds.length >= 2)
         return { isExsistinConversation: false, thatConversationIndex: 0 };
@@ -64,6 +65,7 @@ const NewConversationsModal = ({ currentTab, setCurrentTab }) => {
       selectConversationIndex(alreadyExsistConver().thatConversationIndex);
     }
     setCurrentTab(0);
+  }
   };
 
   const handleCheckboxChange = (contactId) => {

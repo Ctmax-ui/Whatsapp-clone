@@ -1,6 +1,6 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import { BiSolidMicrophone } from "react-icons/bi";
+import { BsFillTriangleFill } from "react-icons/bs";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useConversations } from "../context/ConversationProvider";
 
@@ -15,13 +15,14 @@ const OpenConversation = () => {
   const { sendMessage, selectedConversation } = useConversations();
 
   const handleSubmit = (e) => {
-    // console.log(selectedConversation);
     e.preventDefault();
-    sendMessage(
-      selectedConversation.recipients.map((r) => r.userId),
-      messageValue
-    );
-    setMessageValue("");
+    if (messageValue.length >= 1) {
+      sendMessage(
+        selectedConversation.recipients.map((r) => r.userId),
+        messageValue
+      );
+      setMessageValue("");
+    }
   };
 
   // console.log(selectedConversation);
@@ -33,10 +34,18 @@ const OpenConversation = () => {
           <div className="flex gap-3 items-center">
             <img
               className="border w-[50px] h-[50px] object-fill rounded-full"
-              src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${selectedConversation?.recipients[0].userName.charAt(0).toUpperCase()}.svg`}
+              src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${selectedConversation?.recipients[0]?.userName
+                .charAt(0)
+                .toUpperCase()}.svg`}
               alt="lol"
             />
-            <p>{selectedConversation?.recipients.length <= 1? selectedConversation?.recipients[0].userName: selectedConversation.recipients.map(r=>r.userName).join(', ')+ "...group"}</p>
+            <p>
+              {selectedConversation?.recipients.length <= 1
+                ? selectedConversation?.recipients[0]?.userName
+                : selectedConversation.recipients
+                    .map((r) => r.userName)
+                    .join(", ") + "...group"}
+            </p>
           </div>
           <div className="flex items-center">
             <button>
@@ -55,21 +64,37 @@ const OpenConversation = () => {
                   <li
                     ref={lastMessage ? setRef : null}
                     key={key}
-                    className={`w-fit p-[.40rem] rounded-lg mb-2 ${
+                    className={`min-w-[80px] w-fit rounded-lg mb-2 max-w-[50%] relative ${
                       val.fromMe ? "ms-auto bg-secondary-green" : "bg-white"
                     }`}
                   >
+                    <div
+                      className={`absolute -top-[1px] z[-3]  -rotate-180 text-[.9rem] ${
+                        val.fromMe
+                          ? "text-secondary-green -right-[7px]"
+                          : "text-white -left-[7px]"
+                      }`}
+                    >
+                      <BsFillTriangleFill />
+                    </div>
                     {selectedConversation.recipients.length >= 2 &&
                     !val.fromMe ? (
-                      <a href="#" className="text-sm hover:underline">
+                      <a
+                        href="#"
+                        className="hover:underline ms-2 text-sm text-slate-500"
+                      >
                         {val.senderName || val.sender}
                       </a>
                     ) : (
                       ""
                     )}
-                    <div className="flex justify-between gap-2 items-end">
-                      <p>{val.textMessage}</p>
-                      <p className="text-[.7rem]">{val.sendedtime || '00:00'}</p>
+                    <div className="flex flex-col justify-between items-end px-2 py-1 relative">
+                      <p className="break-all self-start text-[15px] font-[400]">
+                        {val.textMessage}
+                      </p>
+                      <p className="text-[.66rem] text-slate-500">
+                        {val.sendedtime || "00:00"}
+                      </p>
                     </div>
                   </li>
                 );

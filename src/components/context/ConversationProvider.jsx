@@ -42,7 +42,7 @@ export const ConversationProvider = ({ userId, children, userDeta }) => {
         let madeChange = false;
         const date = new Date
         const currentTime = `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`
-        console.log(currentTime);
+        // console.log(currentTime);
 
         const newMessage = { sender, textMessage , sendedtime:currentTime};
         const newConversation = prevConversation.map((conversation) => {

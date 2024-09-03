@@ -5,7 +5,7 @@ import { IoMdSearch } from "react-icons/io";
 
 const Conversations = ({ currentTab, setCurrentTab }) => {
   const { conversations, selectConversationIndex, selectedConversationIndex } = useConversations();
-  console.log(conversations.map((val) => val),selectedConversationIndex);
+  // console.log(conversations.map((val) => val),selectedConversationIndex);
 
   return (
     <>
@@ -113,7 +113,7 @@ const Conversations = ({ currentTab, setCurrentTab }) => {
                 >
                   <img
                     className="border w-[50px] h-[50px] object-fill rounded-full"
-                    src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${conversation.recipients[0].userName
+                    src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${conversation.recipients[0]?.userName
                       .charAt(0)
                       .toUpperCase()}.svg`}
                     alt="lol"
@@ -121,8 +121,8 @@ const Conversations = ({ currentTab, setCurrentTab }) => {
                   <div className="">
                     <p className="text-nowrap flex">
                       <span className="text-nowrap inline text-ellipsis w-[150px] -me-2 overflow-hidden">{conversation.recipients
-                        .map((val) => val.userName)
-                        .join(",")}</span>{conversation.recipients.length>=2&&<span>group</span>}
+                        .map((val) => val?.userName)
+                        .join(",")}</span>
                     </p>
                     {conversation.messages.length != 0 && (
                       <p className=" text-sm text-slate-600 text-nowrap text-ellipsis w-[150px] overflow-hidden">
