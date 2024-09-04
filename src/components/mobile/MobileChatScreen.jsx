@@ -1,22 +1,28 @@
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { GoPlus } from "react-icons/go";
-import { BsFillTriangleFill } from "react-icons/bs";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import { useConversations } from "../context/ConversationProvider";
+import { BsFillTriangleFill, BsThreeDotsVertical } from "react-icons/bs";
+import { useCallback, useRef, useState } from "react";
+import { TfiClip } from "react-icons/tfi";
+import { FaRupeeSign } from "react-icons/fa";
+import { FiCamera } from "react-icons/fi";
+import { PiPaperPlaneRightFill } from "react-icons/pi";
 
-const OpenConversation = () => {
+const MobileChatScreen = ({ setCurrentScreenTab }) => {
   const inputForm = useRef();
+
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
     }
   }, []);
+
   const [messageValue, setMessageValue] = useState("");
 
   const { sendMessage, selectedConversation } = useConversations();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('object');
     if (messageValue.length >= 1) {
       sendMessage(
         selectedConversation.recipients.map((r) => r.userId),
@@ -25,38 +31,45 @@ const OpenConversation = () => {
       setMessageValue("");
     }
   };
-
-  // console.log(selectedConversation);
+  console.log(selectedConversation);
 
   return (
     <>
-      <div className="h-screen overflow-hidden w-full flex flex-col   ">
-        <header className="flex justify-between items-center p-2 bg-secondary-gray">
-          <div className="flex gap-3 items-center">
-            <img
-              className="border w-[50px] h-[50px] object-fill rounded-full"
-              src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${selectedConversation?.recipients[0]?.userName
-                .charAt(0)
-                .toUpperCase()}.svg`}
-              alt="eror"
-            />
-            <p>
-              {selectedConversation?.recipients.length <= 1
-                ? selectedConversation?.recipients[0]?.userName
-                : selectedConversation.recipients
-                    .map((r) => r.userName)
-                    .join(", ") + "...group"}
-            </p>
-          </div>
-          <div className="flex items-center">
-            <button>
-              <BsThreeDotsVertical />
+      <div
+        className="flex flex-col h-screen w-screen relative"
+        style={{
+          background: "#efeae2 url('bg/tp-light-bg.png') center",
+          backgroundSize: "300px ",
+        }}
+      >
+        <div className="h-[12%] bg-white flex items-center justify-between px-4">
+          <div className="h-[40%] flex justify-start items-center gap-4">
+            <button className="text-xl" onClick={() => setCurrentScreenTab(0)}>
+              <FaArrowLeft />
             </button>
+            <div className="flex gap-3 items-center">
+              <img
+                className="border w-[50px] h-[50px] object-fill rounded-full"
+                src={`https://raw.githubusercontent.com/eladnava/material-letter-icons/master/dist/svg/${selectedConversation?.recipients[0]?.userName
+                  .charAt(0)
+                  .toUpperCase()}.svg`}
+              />
+              <p className="w-32 text-ellipsis overflow-hidden text-nowrap text-lg">
+                {selectedConversation?.recipients.length <= 1
+                  ? selectedConversation?.recipients[0]?.userName
+                  : selectedConversation.recipients
+                      .map((r) => r.userName)
+                      .join(", ") + "...group"}
+              </p>
+            </div>
           </div>
-        </header>
+          <button className="p-4 text-xl">
+                  <BsThreeDotsVertical />
+          </button>
+        </div>
 
-        <div className="w-full flex flex-col flex-grow bg-gradient-to-t bg-transparent">
-          <ul className="message-box flex flex-col h-[80vh] overflow-y-scroll px-5 py-3 scroll-thin">
+        <div className="h-[88%] w-full">
+          <ul className=" overflow-hidden w-full h-full overflow-y-scroll p-5 pb-20">
             {selectedConversation &&
               selectedConversation.messages.map((val, key) => {
                 const lastMessage =
@@ -65,7 +78,7 @@ const OpenConversation = () => {
                   <li
                     ref={lastMessage ? setRef : null}
                     key={key}
-                    className={`min-w-[80px] w-fit rounded-lg mb-2 max-w-[50%] relative ${
+                    className={`w-fit min-w-[100px]  rounded-lg mb-2 max-w-[50%] relative ${
                       val.fromMe ? "ms-auto bg-secondary-green" : "bg-white"
                     }`}
                   >
@@ -101,15 +114,17 @@ const OpenConversation = () => {
                 );
               })}
           </ul>
+        </div>
 
-          <div className="bg-secondary-gray h-[14%]">
-            <form
-              action=""
-              className="flex items-center h-full"
-              onSubmit={handleSubmit}
-              ref={inputForm}
-            >
-              <button className="p-3">
+        <div className="h-[12%] fixed w-full left-0 bottom-0 px-3">
+          <form
+            onSubmit={handleSubmit}
+            ref={inputForm}
+            action="#"
+            className="w-full h-full flex items-center justify-between gap-3"
+          >
+            <div className="flex flex-grow items-center gap-2 rounded-full bg-white px-5">
+              <button disabled className="">
                 <svg
                   viewBox="0 0 24 24"
                   height="24"
@@ -127,47 +142,26 @@ const OpenConversation = () => {
                   ></path>
                 </svg>
               </button>
-
-              <button className="text-3xl p-3">
-                <GoPlus />
+              <input
+                type="text"
+                className="w-full py-4 outline-none px-3"
+                value={messageValue}
+                onChange={(val) => setMessageValue(val.target.value)}
+              />
+              {/* <button disabled className="text-2xl"><TfiClip /></button>
+              <button disabled className="text-xl"><FaRupeeSign /></button> */}
+              <button disabled className="text-2xl">
+                <FiCamera />
               </button>
-
-              <div className="w-5/6 h-3/5">
-                <input
-                  type="text"
-                  className="w-full h-full rounded-md outline-none px-4"
-                  name=""
-                  id=""
-                  placeholder="Type a message"
-                  value={messageValue}
-                  onChange={(val) => setMessageValue(val.target.value)}
-                />
-              </div>
-
-              <button className="text-2xl p-3">
-                <svg
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  preserveAspectRatio="xMidYMid meet"
-                  version="1.1"
-                  x="0px"
-                  y="0px"
-                  enableBackground="new 0 0 24 24"
-                >
-                  <title>send</title>
-                  <path
-                    fill="currentColor"
-                    d="M1.101,21.757L23.8,12.028L1.101,2.3l0.011,7.912l13.623,1.816L1.112,13.845 L1.101,21.757z"
-                  ></path>
-                </svg>
-              </button>
-            </form>
-          </div>
+            </div>
+            <button type='submit' className="bg-green-600 p-4 text-xl text-white rounded-full ">
+              <PiPaperPlaneRightFill />
+            </button>
+          </form>
         </div>
       </div>
     </>
   );
 };
 
-export default OpenConversation;
+export default MobileChatScreen;

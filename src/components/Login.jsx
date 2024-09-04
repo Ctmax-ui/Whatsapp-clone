@@ -20,8 +20,8 @@ const IdRef = useRef()
  
   return (
     <>
-      <div className="w-screen h-52 bg-secondary">
-        <div className="w-[1000px] mx-auto absolute top-10 left-1/2 -translate-x-1/2">
+      <div className="w-[100%] h-52 bg-secondary">
+        <div className="w-[90%] mx-auto absolute top-10 left-1/2 -translate-x-1/2">
           <div className="flex justify-center items-center w-fit text-white gap-2">
             <img src={logo} alt="" />
             <span className=" uppercase font-semibold">WhatsApp web</span>
