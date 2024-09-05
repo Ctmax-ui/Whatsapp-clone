@@ -8,15 +8,14 @@ This is a lightweight WhatsApp clone built using Node.js and React, designed for
 
 ## Features
 
-• Real-time anonymous messaging without storing any personal data.
+- Real-time anonymous messaging without storing any personal data.
 
-• Node.js backend that listens for messages on port 5000.
+- Node.js backend that listens for messages on port 5000.
+- React frontend for a modern, responsive chat UI.
 
-• React frontend for a modern, responsive chat UI.
+- No database – no storage of messages or user information.
 
-• No database – no storage of messages or user information.
-
-• Mobile responsive – use the chat on your phone or tablet with ease.
+- Mobile responsive – use the chat on your phone or tablet with ease.
 
 
 
@@ -24,6 +23,7 @@ This is a lightweight WhatsApp clone built using Node.js and React, designed for
 ## Demo
 
 https://clone-web-whatsapp.vercel.app/
+
 ## Local Setup
 To run the project locally on your machine, follow these steps:
 
