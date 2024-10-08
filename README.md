@@ -55,8 +55,13 @@ In the root of the project, run the following command:
     ```
 
 4. Download and run the backend from here [Localhost Backend api](https://github.com/Ctmax-ui/api-for-whatsapp-clone)
+    ```bash
+    git clone https://github.com/Ctmax-ui/api-for-whatsapp-clone.git
+    cd api-for-whatsapp-clone
+    npm start
+    ```
 
-4. Run the React server:
+5. Run the React server:
 
     ```bash
     npm install
