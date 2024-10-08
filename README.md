@@ -54,6 +54,8 @@ In the root of the project, run the following command:
     cd whatsapp-web-clone
     ```
 
+4. Download and run the backend from here [Localhost Backend api](https://github.com/Ctmax-ui/api-for-whatsapp-clone)
+
 4. Run the React server:
 
     ```bash
